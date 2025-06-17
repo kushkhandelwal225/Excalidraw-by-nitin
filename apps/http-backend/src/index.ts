@@ -1,11 +1,9 @@
 import express, {Request, Response} from 'express';
-import { JWT_SECRET } from './config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { middleware } from './middleware';
-
-
-
+import {JWT_SECRET} from '@repo/backend-common/config'
+import {CreateUserSchema, SigninSchema} from '@repo/common/types'
 
 const app = express();
 app.use(express.json())
@@ -97,9 +95,7 @@ app.post("/signin", async (req, res) => {
 })
 app.post("create-room", middleware , (req, res) => {
     const { roomId } = req.body;
-    try {
-        const room = prismaClient.room.create
-    }
+    
 })
 
 app.listen(3001, () => {
