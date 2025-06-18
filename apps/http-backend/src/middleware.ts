@@ -6,7 +6,8 @@ export const middleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers["authorization"]?.replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).json({ message: "Token not provided" });
+    res.status(401).json({ message: "Token not provided" });
+    return; // End the request-response cycle
   }
 
   try {
@@ -14,11 +15,13 @@ export const middleware = (req: Request, res: Response, next: NextFunction) => {
 
     if (decoded && typeof decoded === "object" && "userId" in decoded) {
       req.userId = decoded.userId as string;
-      next(); 
+      next(); // Pass control to next middleware
     } else {
-      return res.status(403).json({ message: "Invalid token" });
+      res.status(403).json({ message: "Invalid token" });
+      return; // End the request-response cycle
     }
   } catch (err) {
-    return res.status(403).json({ message: "Token verification failed" });
+    res.status(403).json({ message: "Token verification failed" });
+    return; // End the request-response cycle
   }
 };
