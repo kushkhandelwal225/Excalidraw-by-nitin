@@ -57,14 +57,43 @@ function TopBar({selectedTool, setselectedTool} : {
     selectedTool : Tool, 
     setselectedTool : (s : Tool ) => void
 }) {
+    const tools = [
+        { id: "line", icon: PenLine, label: "Line" },
+        { id: "rect", icon: RectangleHorizontal, label: "Rectangle" },
+        { id: "circle", icon: Circle, label: "Circle" },
+        { id: "pencil", icon: Pencil, label: "Draw" },
+        { id: "arrow", icon: MoveRight, label: "Arrow" }
+    ];
+
     return (
-        <div className="fixed top-10 left-30 z-10 flex gap-5">
-            <IconButton activated={selectedTool === "line"} children={<PenLine/>} onClick={() => {setselectedTool("line")}}/>
-            <IconButton activated={selectedTool === "rect"} children={<RectangleHorizontal/>} onClick={() => {setselectedTool("rect")}}/>
-            <IconButton activated={selectedTool === "circle"} children={<Circle/>} onClick={() => {setselectedTool("circle")}}/>
-            <IconButton activated={selectedTool === "pencil"} children={<Pencil/>} onClick={() => {setselectedTool("pencil")}}/>
-            <IconButton activated={selectedTool === "arrow"} children={<MoveRight/>} onClick={() => {setselectedTool("arrow")}}/>
-            
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-1.5 flex items-center gap-0.5">
+                {tools.map((tool) => {
+                    const Icon = tool.icon;
+                    const isActive = selectedTool === tool.id;
+                    
+                    return (
+                        <button
+                            key={tool.id}
+                            onClick={() => setselectedTool(tool.id as Tool)}
+                            className={`
+                                relative group p-2.5 rounded-xl transition-all duration-200 ease-out
+                                ${isActive 
+                                    ? 'bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-200/50' 
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                }
+                                hover:scale-105 active:scale-95
+                            `}
+                            title={tool.label}
+                        >
+                            <Icon size={20} strokeWidth={1.5} />
+                            {isActive && (
+                                <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full" />
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
         </div>
     )
 }
