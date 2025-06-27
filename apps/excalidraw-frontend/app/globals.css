@@ -1,25 +1,547 @@
-@import "tailwindcss";
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+ @import "tailwindcss";
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/*
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-3deg);
+  }
+}
+
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+@keyframes bounce-gentle-delayed {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+@keyframes bounce-gentle-more-delayed {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-rect {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-polygon {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-underline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-element {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-element-delayed {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-element-more-delayed {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-circle-delayed {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-arrow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-arrow-delayed {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up-delayed {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up-more-delayed {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up-delayed {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up-more-delayed {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cursor-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(-3px, -8px);
+  }
+  75% {
+    transform: translate(8px, -3px);
+  }
+}
+
+@keyframes cursor-float-delayed {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-5px, 5px);
+  }
+  50% {
+    transform: translate(3px, 8px);
+  }
+  75% {
+    transform: translate(-8px, 3px);
+  }
+}
+
+@keyframes cursor-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes cursor-wiggle-delayed {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 99.9%;
+  }
+}
+
+@keyframes grid-fade {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 4s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 3s ease-in-out infinite;
+}
+
+.animate-bounce-gentle-delayed {
+  animation: bounce-gentle-delayed 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-bounce-gentle-more-delayed {
+  animation: bounce-gentle-more-delayed 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-draw-line {
+  animation: draw-line 3s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.animate-draw-circle {
+  animation: draw-circle 2s ease-out forwards;
+  animation-delay: 2s;
+}
+
+.animate-draw-rect {
+  animation: draw-rect 2s ease-out forwards;
+  animation-delay: 3s;
+}
+
+.animate-draw-polygon {
+  animation: draw-polygon 2.5s ease-out forwards;
+  animation-delay: 4s;
+}
+
+.animate-draw-underline {
+  animation: draw-underline 1.5s ease-out forwards;
+  animation-delay: 0.8s;
+}
+
+.animate-draw-element {
+  animation: draw-element 2s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.animate-draw-element-delayed {
+  animation: draw-element-delayed 2s ease-out forwards;
+  animation-delay: 2s;
+}
+
+.animate-draw-element-more-delayed {
+  animation: draw-element-more-delayed 2s ease-out forwards;
+  animation-delay: 3s;
+}
+
+.animate-draw-circle-delayed {
+  animation: draw-circle-delayed 2s ease-out forwards;
+  animation-delay: 4s;
+}
+
+.animate-draw-arrow {
+  animation: draw-arrow 1s ease-out forwards;
+  animation-delay: 2.5s;
+}
+
+.animate-draw-arrow-delayed {
+  animation: draw-arrow-delayed 1s ease-out forwards;
+  animation-delay: 4.5s;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
+
+.animate-slide-up-delayed {
+  animation: slide-up-delayed 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.animate-slide-up-more-delayed {
+  animation: slide-up-more-delayed 0.8s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-fade-in-up-delayed {
+  animation: fade-in-up-delayed 0.8s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.animate-fade-in-up-more-delayed {
+  animation: fade-in-up-more-delayed 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.animate-cursor-float {
+  animation: cursor-float 4s ease-in-out infinite;
+}
+
+.animate-cursor-float-delayed {
+  animation: cursor-float-delayed 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-cursor-wiggle {
+  animation: cursor-wiggle 2s ease-in-out infinite;
+}
+
+.animate-cursor-wiggle-delayed {
+  animation: cursor-wiggle-delayed 2s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-progress {
+  animation: progress 3s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.animate-grid-fade {
+  animation: grid-fade 2s ease-in-out infinite;
+}
+
+.animate-grid-move {
+  animation: grid-move 20s linear infinite;
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.animate-slide-up,
+.animate-slide-up-delayed,
+.animate-slide-up-more-delayed,
+.animate-slide-in-right,
+.animate-fade-in,
+.animate-fade-in-up,
+.animate-fade-in-up-delayed,
+.animate-fade-in-up-more-delayed {
+  opacity: 0;
+}  */

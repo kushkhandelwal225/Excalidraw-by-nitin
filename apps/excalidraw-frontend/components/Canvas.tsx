@@ -1,40 +1,67 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { initDraw } from "@/draw";
+import IconButton from "./IconButton";
+import { Circle, PenLine, RectangleHorizontal } from "lucide-react";
+import { Game } from "@/draw/Game";
+
+export type Tool = "circle" | "line" | "rect"
 
 export function Canvas({
     roomId,
     socket
-} : {
-    roomId : string
-    socket : WebSocket
+}: {
+    roomId: string
+    socket: WebSocket
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [game, setGame] = useState<Game>()
+
+    const [selectedTool, setselectedTool] = useState<Tool>("rect")
+    useEffect(() => {
+        game?.setTool(selectedTool);
+        
+    }, [selectedTool, game]);
+
     useEffect(() => {
         if (canvasRef.current) {
-            const canvas = canvasRef.current;
-            initDraw(canvas, roomId, socket);
+            const g = new Game(canvasRef.current, roomId, socket);
+            setGame(g);
+            return () => {
+            g.destroy();
         }
+        }
+        
     }, [canvasRef]);
     return (
-        <div className="h-screen w-screen">
-            
+        <div style={{
+            height: "100vh",
+            overflow: "hidden"
+        }}>
+
+
             <canvas
                 ref={canvasRef}
-                width={1000}
-                height={1000}
+                width={window.innerWidth}
+                height={window.innerHeight}
                 style={{
-                    width: "1000px",
-                    height: "1000px",
                     border: "1px solid black",
                     backgroundColor: "white"
                 }}
             />
-            {/* <div className="absolute top-0 right-0">
-                <button className="bg-black text-white p-2 ">Rect</button>
-                <button className="bg-black text-white p-2 ">Circle </button>
-            </div> */}
-
+            <TopBar selectedTool={selectedTool} setselectedTool={setselectedTool}/>
+        </div>
+    )
+}
+function TopBar({selectedTool, setselectedTool} : {
+    selectedTool : Tool, 
+    setselectedTool : (s : Tool ) => void
+}) {
+    return (
+        <div className="fixed top-10 left-30 z-10 flex gap-5">
+            <IconButton activated={selectedTool === "line"} children={<PenLine/>} onClick={() => {setselectedTool("line")}}/>
+            <IconButton activated={selectedTool === "rect"} children={<RectangleHorizontal/>} onClick={() => {setselectedTool("rect")}}/>
+            <IconButton activated={selectedTool === "circle"} children={<Circle/>} onClick={() => {setselectedTool("circle")}}/>
         </div>
     )
 }
