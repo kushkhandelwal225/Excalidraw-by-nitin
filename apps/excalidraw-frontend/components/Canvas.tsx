@@ -2,10 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { initDraw } from "@/draw";
 import IconButton from "./IconButton";
-import { Circle, PenLine, RectangleHorizontal } from "lucide-react";
+import { Circle, MoveRight, Pencil, PenLine, RectangleHorizontal } from "lucide-react";
 import { Game } from "@/draw/Game";
 
-export type Tool = "circle" | "line" | "rect"
+export type Tool = "circle" | "line" | "rect" | "pencil" | "arrow"
 
 export function Canvas({
     roomId,
@@ -62,6 +62,9 @@ function TopBar({selectedTool, setselectedTool} : {
             <IconButton activated={selectedTool === "line"} children={<PenLine/>} onClick={() => {setselectedTool("line")}}/>
             <IconButton activated={selectedTool === "rect"} children={<RectangleHorizontal/>} onClick={() => {setselectedTool("rect")}}/>
             <IconButton activated={selectedTool === "circle"} children={<Circle/>} onClick={() => {setselectedTool("circle")}}/>
+            <IconButton activated={selectedTool === "pencil"} children={<Pencil/>} onClick={() => {setselectedTool("pencil")}}/>
+            <IconButton activated={selectedTool === "arrow"} children={<MoveRight/>} onClick={() => {setselectedTool("arrow")}}/>
+            
         </div>
     )
 }
