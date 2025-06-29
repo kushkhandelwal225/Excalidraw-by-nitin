@@ -1,12 +1,14 @@
 "use client"
-import { AuthPage } from "@/components/AuthPage";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Signin(){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const router = useRouter()
+    
 
     const handleSignin = async () =>{
         const response = await axios.post("http://localhost:3001/signin", {
@@ -15,7 +17,8 @@ export default function Signin(){
             
         })
         const token = response.data.token;
-        localStorage.setItem("token", token)
+        localStorage.setItem("token", token);
+        
     }
     return (
         <div>
