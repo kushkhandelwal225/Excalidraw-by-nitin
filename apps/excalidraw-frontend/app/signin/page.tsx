@@ -18,6 +18,9 @@ export default function Signin(){
         })
         const token = response.data.token;
         localStorage.setItem("token", token);
+        const room = await axios.get(`http://localhost:3001/room/${username}`)
+        const roomId = room.data.room.id;
+        router.push(`/canvas/${roomId}`)
         
     }
     return (
@@ -34,7 +37,6 @@ export default function Signin(){
                 }}
             />
             <button onClick={handleSignin}>signin</button>
-
         </div>
     )
 }

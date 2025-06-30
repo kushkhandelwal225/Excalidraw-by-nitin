@@ -50,10 +50,15 @@ app.post("/signup", async (req: Request, res: Response) => {
                 name: name
             }
         });
-
+        const token = jwt.sign(
+            { userId: user.id },
+            JWT_SECRET,
+            { expiresIn: "7d" }
+        );
         return res.status(201).json({
             message: "User created successfully",
-            userId: user.id
+            userId: user.id,
+            token : token
         });
 
     } catch (error) {
@@ -132,7 +137,7 @@ app.post("/create-room", middleware, async (req: Request, res: Response) => {
         });
 
         res.status(200).json({
-            message: "Room created with room id " + room.id,
+            roomId: room.id,
             admin: req.userId
         });
     } catch (e) {
@@ -142,13 +147,13 @@ app.post("/create-room", middleware, async (req: Request, res: Response) => {
 });
 
 
-app.get("/chat/:roomId", middleware, async (req : Request, res : Response) => {
+app.get("/chat/:roomId", middleware, async (req: Request, res: Response) => {
     try {
         const roomId = Number(req.params.roomId);
 
         const chats = await prismaClient.chat.findMany({
             where: {
-                 roomId
+                roomId
             },
             orderBy: {
                 id: "desc"
