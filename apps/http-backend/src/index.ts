@@ -7,7 +7,8 @@ import { CreateUserSchema, SigninSchema, CreateRoomSchema } from '@repo/common/t
 import { prismaClient } from '@repo/db/client';
 import cors from 'cors';
 const app = express();
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 declare global {
     namespace Express {
@@ -16,14 +17,14 @@ declare global {
         }
     }
 }
-//@ts-ignore
 app.post("/signup", async (req: Request, res: Response) => {
     const parsedData = CreateUserSchema.safeParse(req.body);
     if (!parsedData.success) {
         console.log(parsedData.error);
-        return res.status(400).json({
+        res.status(400).json({
             message: "Incorrect inputs"
         });
+        return;
     }
 
     const { username, password, name } = parsedData.data;
@@ -36,9 +37,10 @@ app.post("/signup", async (req: Request, res: Response) => {
         });
 
         if (existingUser) {
-            return res.status(409).json({
+            res.status(409).json({
                 message: "User already exists"
             });
+            return
         }
 
         const hashedPass = await bcrypt.hash(password, 10);
@@ -55,26 +57,28 @@ app.post("/signup", async (req: Request, res: Response) => {
             JWT_SECRET,
             { expiresIn: "7d" }
         );
-        return res.status(201).json({
+        res.status(201).json({
             message: "User created successfully",
             userId: user.id,
-            token : token
+            token: token
         });
+        return;
 
     } catch (error) {
         console.error("Signup error:", error);
-        return res.status(500).json({
+        res.status(500).json({
             message: "Internal Server Error"
         });
+        return
     }
 });
-//@ts-ignore
 app.post("/signin", async (req, res) => {
     const parsedData = SigninSchema.safeParse(req.body);
     if (!parsedData.success) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Incorrect inputs"
         });
+        return;
     }
 
     const { username, password } = parsedData.data;
@@ -87,16 +91,18 @@ app.post("/signin", async (req, res) => {
         });
 
         if (!user) {
-            return res.status(403).json({
+            res.status(403).json({
                 message: "User not found"
             });
+            return
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
-            return res.status(403).json({
+            res.status(403).json({
                 message: "Incorrect password"
             });
+            return;
         }
 
         const token = jwt.sign(
@@ -105,13 +111,15 @@ app.post("/signin", async (req, res) => {
             { expiresIn: "7d" }
         );
 
-        return res.status(200).json({ token });
+        res.status(200).json({ token });
+        return;
 
     } catch (error) {
         console.error("Signin error:", error);
-        return res.status(500).json({
+        res.status(500).json({
             message: "Something went wrong"
         });
+        return;
     }
 });
 app.post("/create-room", middleware, async (req: Request, res: Response) => {
@@ -184,6 +192,28 @@ app.get("/room/:slug", async (req, res) => {
         room
     })
 })
+
+
+app.post("/clear-room", middleware, async (req, res) => {
+    try {
+        const roomId = parseInt(req.body.roomId);
+        await prismaClient.chat.deleteMany({
+            where: {
+                roomId
+            }
+        })
+        res.status(200).json({
+            message: "chats deleated"
+        })
+    }
+    catch (e) {
+        console.error("Error deleting chats:", e); // logs full error in server logs
+        res.status(500).json({
+            error: "Internal server error while deleting chats."
+        });
+    }
+})
+
 
 
 app.listen(3001, () => {
