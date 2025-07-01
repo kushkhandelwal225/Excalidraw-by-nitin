@@ -35,10 +35,9 @@ export function Canvas({
     }, [selectedTool, game]);
 
     useEffect(() => {
-        const ctx = canvasRef.current?.getContext("2d");
-        if (ctx && canvasRef.current) {
-            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        }
+        game?.init();
+
+        
     }, [coin]);
     useEffect(() => {
         if (canvasRef.current) {
@@ -72,7 +71,7 @@ export function Canvas({
 
             <MainToolbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
 
-            <TopActionsBar roomId={roomId} setcoin={setcoin} coin={coin}/>
+            <TopActionsBar roomId={roomId} setcoin={setcoin} coin={coin} />
 
             <ZoomControls />
 
