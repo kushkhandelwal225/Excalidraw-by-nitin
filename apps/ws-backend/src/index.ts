@@ -72,6 +72,23 @@ wss.on('connection', function connection(ws, request) {
       }
       user.rooms = user?.rooms.filter(x => x === parsedData.room);
     }
+    if(parsedData.type === "clear_canvas"){
+      const roomId = parsedData.roomId;
+      await prismaClient.chat.deleteMany({
+        where : {
+          roomId: Number(roomId),
+        }
+      })
+      users.forEach(user => {
+        if (user.rooms.includes(roomId)) {
+          user.ws.send(JSON.stringify({
+            type: "clear_canvas",
+            roomId
+          }))
+        }
+      })
+
+    }
 
     console.log("message received")
     console.log(parsedData);

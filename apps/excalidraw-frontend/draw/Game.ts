@@ -84,6 +84,9 @@ export class Game {
                 this.existingShapes.push(shape.shape);
                 this.clearCanvas();
             }
+            if(message.type === "clear_canvas"){
+                this.init();
+            }
         };
     }
 
@@ -325,6 +328,12 @@ export class Game {
                 }
             });
         }
+    }
+    deleteCanvasShapes(){
+        this.socket.send(JSON.stringify({
+            type: "clear_canvas",
+            roomId: this.roomId
+        }));
     }
 
     initMouseHandlers() {

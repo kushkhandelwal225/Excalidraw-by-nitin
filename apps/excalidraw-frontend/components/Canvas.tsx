@@ -49,6 +49,15 @@ export function Canvas({
         }
     }, [canvasRef]);
 
+    async function handleDeletews() {
+        try {
+            game?.deleteCanvasShapes();
+           
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className="h-screen w-screen bg-white overflow-hidden relative">
             <div
@@ -71,7 +80,7 @@ export function Canvas({
 
             <MainToolbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
 
-            <TopActionsBar roomId={roomId} setcoin={setcoin} coin={coin} />
+            <TopActionsBar roomId={roomId} setcoin={setcoin} coin={coin} handleDeletews={handleDeletews}  />
 
             <ZoomControls />
 

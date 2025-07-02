@@ -2,19 +2,13 @@ import axios from "axios";
 import { Library, Redo2, Share, Trash2, Undo2, X } from "lucide-react";
 import { useState } from "react";
 
-export default function TopActionsBar({ roomId, setcoin, coin }: { roomId: string, setcoin: React.Dispatch<React.SetStateAction<boolean>>, coin : boolean}) {
+export default function TopActionsBar({ roomId, setcoin, coin, handleDeletews }: { roomId: string, setcoin: React.Dispatch<React.SetStateAction<boolean>>, coin : boolean, handleDeletews : () => void}) {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const token = localStorage.getItem("token");
 
     async function handleDelete() {
         try {
-            await axios.post("http://localhost:3001/clear-room", {
-                roomId
-            }, {
-                headers: {
-                    Authorization: token
-                }
-            });
+            handleDeletews();
             setcoin(c => !c);
             setShowConfirmation(false);
         } catch (error) {
@@ -69,7 +63,6 @@ export default function TopActionsBar({ roomId, setcoin, coin }: { roomId: strin
                 </div>
             </div>
 
-            {/* Confirmation Modal */}
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center z-[100] pointer-events-none">
                     <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 max-w-md w-full mx-4 pointer-events-auto drop-shadow-2xl" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 60px rgba(0, 0, 0, 0.08)' }}>
