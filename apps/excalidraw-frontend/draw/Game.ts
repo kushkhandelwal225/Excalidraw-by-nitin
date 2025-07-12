@@ -1,4 +1,4 @@
-import { Tool } from "@/components/Canvas";
+import { strokeColor, Tool } from "@/components/Canvas";
 import { getExistingShapes } from "./http";
 
 type Shape = {
@@ -7,27 +7,32 @@ type Shape = {
     y: number;
     width: number;
     height: number;
-    cornerRadius?: number; 
+    cornerRadius?: number;
+    shapeColor : string
 } | {
     type: "circle";
     centerX: number;
     centerY: number;
     radius: number;
+    shapeColor : string
 } | {
     type: "line";
     startX: number;
     startY: number;
     endX: number;
     endY: number;
+    shapeColor : string
 } | {
     type: "pencil";
     points: { x: number; y: number }[];
+    shapeColor : string
 } | {
     type: "arrow";
     startX: number;
     startY: number;
     endX: number;
     endY: number;
+    shapeColor : string
 };
 
 export class Game {
@@ -41,6 +46,7 @@ export class Game {
     private startX: number;
     private startY: number;
     private selectedTool: Tool = "rect";
+    private selectedColor : strokeColor = "black";
     private cornerRadius: number = 15; 
 
     constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
@@ -65,6 +71,9 @@ export class Game {
 
     setTool(tool: Tool) {
         this.selectedTool = tool;
+    }
+    setColor(color : strokeColor){
+        this.selectedColor = color
     }
 
     setCornerRadius(radius: number) {
@@ -110,8 +119,11 @@ export class Game {
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.lineWidth = 2;
+        // this.ctx.strokeStyle = this.selectedColor
 
         this.existingShapes.forEach((shape) => {
+            this.ctx.strokeStyle = shape.shapeColor 
+            
             if (shape.type === "rect") {
                 const radius = shape.cornerRadius || 0;
                 if (typeof this.ctx.roundRect === 'function') {
@@ -204,7 +216,8 @@ export class Game {
                 y: this.startY,
                 width,
                 height,
-                cornerRadius: this.cornerRadius
+                cornerRadius: this.cornerRadius,
+                shapeColor : this.selectedColor
             };
         }
         else if (selectedTool === "circle") {
@@ -214,7 +227,8 @@ export class Game {
                 type: "circle",
                 centerX,
                 centerY,
-                radius: Math.sqrt(width * width + height * height) / 2
+                radius: Math.sqrt(width * width + height * height) / 2,
+                shapeColor : this.selectedColor
             };
         }
         else if (selectedTool === "line") {
@@ -223,14 +237,16 @@ export class Game {
                 startX: this.startX,
                 startY: this.startY,
                 endX: endX,
-                endY: endY
+                endY: endY,
+                shapeColor : this.selectedColor
             };
         }
         else if (selectedTool === "pencil") {
             if (this.pencilPath.length > 1) {
                 shape = {
                     type: "pencil",
-                    points: [...this.pencilPath]
+                    points: [...this.pencilPath],
+                    shapeColor : this.selectedColor
                 };
                 this.existingShapes.push(shape);
                 this.socket.send(JSON.stringify({
@@ -248,7 +264,8 @@ export class Game {
                 startX: this.startX,
                 startY: this.startY,
                 endX: endX,
-                endY: endY
+                endY: endY,
+                shapeColor : this.selectedColor
             };
         }
 
@@ -268,6 +285,7 @@ export class Game {
 
         if (this.clicked) {
             this.clearCanvas();
+            this.ctx.strokeStyle = this.selectedColor
 
             if (this.selectedTool === "rect") {
                 const width = x - this.startX;

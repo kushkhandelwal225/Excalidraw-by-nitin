@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 import { Game } from "@/draw/Game";
 import TopActionsBar from "./TopActionBar";
-import ZoomControls from "./ZoomControls";
-import RoomStatus from "./RoomStatus";
 
 export type Tool = "select" | "circle" | "line" | "rect" | "pencil" | "arrow" | "text" | "image"
+
+export type strokeColor = "red" | "black" | "green"
 
 export function Canvas({
     roomId,
@@ -27,18 +27,15 @@ export function Canvas({
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [game, setGame] = useState<Game>()
     const [selectedTool, setSelectedTool] = useState<Tool>("select")
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [coin, setcoin] = useState(true)
+    const [selectedColor, setSelectedColor] = useState<strokeColor>("black")
 
     useEffect(() => {
         game?.setTool(selectedTool);
+
     }, [selectedTool, game]);
-
     useEffect(() => {
-        game?.init();
-
-        
-    }, [coin]);
+        game?.setColor(selectedColor)
+    }, [selectedColor, game])
     useEffect(() => {
         if (canvasRef.current) {
             const g = new Game(canvasRef.current, roomId, socket);
@@ -48,15 +45,53 @@ export function Canvas({
             }
         }
     }, [canvasRef]);
+    useEffect(() => {
+        if (canvasRef.current) {
+            const canvas = canvasRef.current;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+    }, []);
+
 
     async function handleDeletews() {
         try {
             game?.deleteCanvasShapes();
-           
+
         } catch (error) {
             console.log(error)
         }
     }
+    function handleExportImage() {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+        console.warn("Canvas not ready");
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Create a temporary copy of the canvas
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d")!;
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    tempCtx.fillStyle = "white";
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+    tempCtx.drawImage(canvas, 0, 0);
+
+    const dataURL = tempCanvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "canvas.png";
+    link.click();
+}
+
+
+
 
     return (
         <div className="h-screen w-screen bg-white overflow-hidden relative">
@@ -70,21 +105,29 @@ export function Canvas({
 
             <canvas
                 ref={canvasRef}
-                width={window.innerWidth}
-                height={window.innerHeight}
+
                 className="absolute inset-0 bg-white"
-                style={{
-                    backgroundColor: "white"
-                }}
+
             />
 
             <MainToolbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
 
-            <TopActionsBar roomId={roomId} setcoin={setcoin} coin={coin} handleDeletews={handleDeletews}  />
+            <div className="fixed top-6 right-6 flex gap-2">
+                {["red", "black", "green"].map((color) => (
+                    <button
+                        key={color}
+                        onClick={() => setSelectedColor(color as strokeColor)}
+                        className={`w-8 h-8 rounded-full border-2 ${selectedColor === color ? "border-black" : "border-transparent"}`}
+                        style={{ backgroundColor: color }}
+                    />
+                ))}
+            </div>
 
-            <ZoomControls />
+            <TopActionsBar roomId={roomId} handleDeletews={handleDeletews} handleExportImage={handleExportImage} />
 
-            <RoomStatus roomId={roomId} />
+
+
+
         </div>
     )
 }
@@ -101,7 +144,7 @@ function MainToolbar({ selectedTool, setSelectedTool }: {
         { id: "line", icon: PenLine, label: "Line", shortcut: "L" },
         { id: "pencil", icon: Pencil, label: "Draw", shortcut: "P" },
         { id: "text", icon: Type, label: "Text", shortcut: "T" },
-        { id: "image", icon: Image, label: "Image", shortcut: "I" }
+
     ];
 
     return (
