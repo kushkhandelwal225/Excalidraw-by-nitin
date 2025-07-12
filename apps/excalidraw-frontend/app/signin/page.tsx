@@ -10,6 +10,8 @@ import axios from "axios"
 export default function SignIn() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [demoUsername, setDemoUsername] = useState("nitinn13")
+  const [demoPassword, setDemoPassword] = useState("pass")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -24,6 +26,24 @@ export default function SignIn() {
       const token = response.data.token
       localStorage.setItem("token", token)
       const room = await axios.get(`http://localhost:3001/room/${username}`)
+      const roomId = room.data.room.id
+      router.push(`/canvas/${roomId}`)
+    } catch (error) {
+      console.error("Sign in failed:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const handleDemoSignin = async () =>{
+     setIsLoading(true)
+    try {
+      const response = await axios.post("http://localhost:3001/signin", {
+        username : demoUsername,
+        password : demoPassword,
+      })
+      const token = response.data.token
+      localStorage.setItem("token", token)
+      const room = await axios.get(`http://localhost:3001/room/${demoUsername}`)
       const roomId = room.data.room.id
       router.push(`/canvas/${roomId}`)
     } catch (error) {
@@ -70,9 +90,8 @@ export default function SignIn() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute w-${2 + (i % 3)} h-${2 + (i % 3)} ${
-              i % 3 === 0 ? "bg-black" : i % 3 === 1 ? "bg-gray-400" : "border-2 border-gray-300"
-            } ${i % 2 === 0 ? "rounded-full" : "rounded-lg"}`}
+            className={`absolute w-${2 + (i % 3)} h-${2 + (i % 3)} ${i % 3 === 0 ? "bg-black" : i % 3 === 1 ? "bg-gray-400" : "border-2 border-gray-300"
+              } ${i % 2 === 0 ? "rounded-full" : "rounded-lg"}`}
             style={{
               left: `${15 + ((i * 12) % 70)}%`,
               top: `${25 + ((i * 8) % 50)}%`,
@@ -263,6 +282,44 @@ export default function SignIn() {
                     />
                   </button>
                 </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7, duration: 0.6 }}
+                >
+                  <button
+                    onClick={handleDemoSignin}
+                    
+                    className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-2xl font-medium text-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+                  >
+                    {isLoading ? (
+                      <motion.div
+                        className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+                      />
+                    ) : (
+                      <span className="flex items-center justify-center">
+                        Demo User
+                        <motion.div
+                          className="ml-2"
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                        >
+                          <ArrowRight className="w-5 h-5" />
+                        </motion.div>
+                      </span>
+                    )}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "0%" }}
+                    />
+                  </button>
+                </motion.div>
+
+
+
 
                 {/* Divider */}
                 <motion.div

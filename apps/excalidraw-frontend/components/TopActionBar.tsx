@@ -30,14 +30,8 @@ export default function TopActionsBar({ roomId, handleDeletews, handleExportImag
             <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
                 <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 px-3 py-3">
                     <div className="flex items-center gap-2">
-                        <button className="p-3 rounded-xl text-gray-800 hover:bg-gray-50 transition-all duration-200 active:scale-95" title="Undo">
-                            <Undo2 size={18} strokeWidth={2} />
-                        </button>
-                        <button className="p-3 rounded-xl text-gray-800 hover:bg-gray-50 transition-all duration-200 active:scale-95" title="Redo">
-                            <Redo2 size={18} strokeWidth={2} />
-                        </button>
+                        
 
-                        <div className="w-px h-8 bg-gray-200 mx-2" />
 
                         <button
                             className="p-3 rounded-xl text-gray-800 cursor-pointer hover:bg-gray-50 transition-all duration-200 active:scale-95"
@@ -46,15 +40,6 @@ export default function TopActionsBar({ roomId, handleDeletews, handleExportImag
                         >
                             <Trash2 size={18} strokeWidth={2} />
                         </button>
-
-                        <div className="w-px h-8 bg-gray-200 mx-2" />
-
-                        <button className="p-3 rounded-xl text-gray-800 hover:bg-gray-50 transition-all duration-200 active:scale-95" title="Library">
-                            <Library size={18} strokeWidth={2} />
-                        </button>
-
-                        <div className="w-px h-8 bg-gray-200 mx-2" />
-
                         <button className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-800 transition-all duration-200 flex items-center gap-2 font-medium active:scale-95"
                             onClick={handleExportImage}
                         >

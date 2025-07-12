@@ -8,10 +8,12 @@ import {
     RectangleHorizontal,
     Hand,
     Type,
-    Image
+    Image,
+    Trash2
 } from "lucide-react";
 import { Game } from "@/draw/Game";
 import TopActionsBar from "./TopActionBar";
+import { label } from "framer-motion/client";
 
 export type Tool = "select" | "circle" | "line" | "rect" | "pencil" | "arrow" | "text" | "image"
 
@@ -63,32 +65,32 @@ export function Canvas({
         }
     }
     function handleExportImage() {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-        console.warn("Canvas not ready");
-        return;
+        const canvas = canvasRef.current;
+        if (!canvas) {
+            console.warn("Canvas not ready");
+            return;
+        }
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        // Create a temporary copy of the canvas
+        const tempCanvas = document.createElement("canvas");
+        const tempCtx = tempCanvas.getContext("2d")!;
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+
+        tempCtx.fillStyle = "white";
+        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+        tempCtx.drawImage(canvas, 0, 0);
+
+        const dataURL = tempCanvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataURL;
+        link.download = "canvas.png";
+        link.click();
     }
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Create a temporary copy of the canvas
-    const tempCanvas = document.createElement("canvas");
-    const tempCtx = tempCanvas.getContext("2d")!;
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
-
-    tempCtx.fillStyle = "white";
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-    tempCtx.drawImage(canvas, 0, 0);
-
-    const dataURL = tempCanvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "canvas.png";
-    link.click();
-}
 
 
 
@@ -144,6 +146,7 @@ function MainToolbar({ selectedTool, setSelectedTool }: {
         { id: "line", icon: PenLine, label: "Line", shortcut: "L" },
         { id: "pencil", icon: Pencil, label: "Draw", shortcut: "P" },
         { id: "text", icon: Type, label: "Text", shortcut: "T" },
+
 
     ];
 
