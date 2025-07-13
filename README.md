@@ -41,5 +41,7 @@ excalidraw-clone/
 │ ├── db/ → Prisma schema & database utils
 │ └── config/ → Shared ESLint, TS config, etc.
 
+--- 
+<img width="1895" height="1001" alt="image" src="https://github.com/user-attachments/assets/437a55c7-8f8d-4094-9966-90841606b250" />
 
-
+<img width="1919" height="1000" alt="image" src="https://github.com/user-attachments/assets/e93a9204-f1c1-4c13-9661-131b93c42de6" />
