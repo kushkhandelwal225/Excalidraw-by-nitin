@@ -9,12 +9,12 @@ This project is inspired by [Excalidraw](https://excalidraw.com) and adds featur
 ## 🏗️ Tech Stack
 
 - **Monorepo:** [Turborepo](https://turbo.build/)
-- **Frontend:** [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), Canvas API
+- **Frontend:** [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/)
 - **Backend:** [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/)
 - **WebSocket Server:** `ws` library for real-time collaboration
 - **Database:** [PostgreSQL](https://www.postgresql.org/) via [Prisma ORM](https://www.prisma.io/)
 - **Authentication:** JWT-based auth
-- **Deployment:** Vercel (frontend), EC2 (backend + ws)
+- **Deployment:** AWS EC2
 
 ---
 
