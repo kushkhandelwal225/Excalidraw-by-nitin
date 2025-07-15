@@ -19,13 +19,13 @@ export default function SignIn() {
   const handleSignin = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.post("http://localhost:3001/signin", {
+      const response = await axios.post("http://44.203.162.133:3001/signin", {
         username,
         password,
       })
       const token = response.data.token
       localStorage.setItem("token", token)
-      const room = await axios.get(`http://localhost:3001/room/${username}`)
+      const room = await axios.get(`http://44.203.162.133:3001/room/${username}`)
       const roomId = room.data.room.id
       router.push(`/canvas/${roomId}`)
     } catch (error) {
@@ -37,13 +37,13 @@ export default function SignIn() {
   const handleDemoSignin = async () =>{
      setIsLoading(true)
     try {
-      const response = await axios.post("http://localhost:3001/signin", {
+      const response = await axios.post("http://44.203.162.133:3001/signin", {
         username : demoUsername,
         password : demoPassword,
       })
       const token = response.data.token
       localStorage.setItem("token", token)
-      const room = await axios.get(`http://localhost:3001/room/${demoUsername}`)
+      const room = await axios.get(`http://44.203.162.133:3001/room/${demoUsername}`)
       const roomId = room.data.room.id
       router.push(`/canvas/${roomId}`)
     } catch (error) {
