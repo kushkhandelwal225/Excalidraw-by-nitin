@@ -18,7 +18,7 @@ export default function SignUp() {
   const handleSignup = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.post("http://44.203.162.133:3001/signup", {
+      const response = await axios.post("https://canvas.nitinxdev.fun/api/signup", {
         username,
         name,
         password,
@@ -26,7 +26,7 @@ export default function SignUp() {
       const token = response.data.token
       localStorage.setItem("token", token)
       const room = await axios.post(
-        "http://44.203.162.133:3001/create-room",
+        "https://canvas.nitinxdev.fun/api/create-room",
         {
           roomName: username,
         },
